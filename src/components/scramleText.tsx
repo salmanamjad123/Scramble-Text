@@ -38,8 +38,9 @@ export default function AnimatedCode() {
 
   useEffect(() => {
     let scrambleCounters = Array(codeLines.length).fill(0);
-    let maxScrambleCounts = codeLines.map((_, i) => 7 + i * 3);
-    let interval = setInterval(() => {
+    const maxScrambleCounts = codeLines.map((_, i) => 7 + i * 3);
+
+    const interval = setInterval(() => {
       setScrambledCodeLines(prevLines =>
         prevLines.map((line, index) =>
           scrambleCounters[index] < maxScrambleCounts[index]
@@ -48,11 +49,10 @@ export default function AnimatedCode() {
         )
       );
 
-      scrambleCounters = scrambleCounters.map((count, i) => count + 1);
+      scrambleCounters = scrambleCounters.map(count => count + 1);
 
       if (scrambleCounters.every((count, i) => count >= maxScrambleCounts[i])) {
         clearInterval(interval);
-        let index = 0;
         const stopInterval = setInterval(() => {
           setStoppingIndex(prev => {
             if (prev >= codeLines.length - 1) {
@@ -70,7 +70,7 @@ export default function AnimatedCode() {
 
   useEffect(() => {
     if (!stopCenteredText) {
-      let interval = setInterval(() => {
+      const interval = setInterval(() => {
         setScrambledCenteredText(prevText =>
           prevText.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)])
         );
