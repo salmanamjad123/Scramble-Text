@@ -84,29 +84,24 @@ export default function AnimatedCode() {
   }, [stopCenteredText]);
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen bg-white text-blackfont-mono text-lg whitespace-pre p-4">
-    <div className="max-w-[340px]">
-    {scrambledCodeLines.map((line, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 + index * 0.3 }}
-          className="code-line"
-        >
-          <motion.span
-            animate={{ filter: stoppingIndex >= index ? "blur(0px)" : "blur(0px)" }}
-            transition={{ duration: 0.4 + index * 0.3 }}
+    <div className="relative flex flex-col justify-center items-center h-screen bg-white text-black font-mono text-lg whitespace-pre p-4">
+      <div className="max-w-[340px]">
+        {scrambledCodeLines.map((line, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, delay: index * 0.2 }}
+            className="code-line"
           >
             {stoppingIndex >= index ? codeLines[index] : line}
-          </motion.span>
-        </motion.div>
-      ))}
-    </div>
+          </motion.div>
+        ))}
+      </div>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 5 }}
+        initial={{ opacity: 0, filter: "blur(10px)" }}
+        animate={{ opacity: 1, filter: "blur(0px)" }}
+        transition={{ duration: 1.3, delay: codeLines.length * 0.2 }}
         className="centered-text w-full flex justify-center text-center mt-8 text-xl"
       >
         {scrambledCenteredText}
