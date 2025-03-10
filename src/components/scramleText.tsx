@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+
 const codeText = `
 for (when) {
     creators.are {
@@ -26,6 +27,8 @@ const centeredText = `[ GROUNDS ]            [ CREATOR FOUNDRY ]             [ R
 const codeLines = codeText.split("\n");
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890*#@/*!%&^";
 
+
+
 export default function AnimatedCode() {
   const [scrambledCodeLines, setScrambledCodeLines] = useState(codeLines.map(line =>
     line.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)]))
@@ -38,7 +41,7 @@ export default function AnimatedCode() {
 
   useEffect(() => {
     let scrambleCounters = Array(codeLines.length).fill(0);
-    const maxScrambleCounts = codeLines.map((_, i) => 7 + i * 3);
+    const maxScrambleCounts = codeLines.map((_, i) => 3 + i * 2);
 
     const interval = setInterval(() => {
       setScrambledCodeLines(prevLines =>
@@ -78,21 +81,21 @@ export default function AnimatedCode() {
       setTimeout(() => {
         clearInterval(interval);
         setScrambledCenteredText(centeredText);
-      }, 6000);
+      }, 3700);
       return () => clearInterval(interval);
     }
   }, [stopCenteredText]);
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen bg-white text-black font-mono text-lg whitespace-pre p-4">
+    <div className="relative flex flex-col justify-center items-center h-screen bg-white font-firaCode text-black font-mono text-lg whitespace-pre p-4">
       <div className="max-w-[340px]">
         {scrambledCodeLines.map((line, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, filter: "blur(10px)" }}
             animate={{ opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: index * 0.2 }}
-            className="code-line"
+            transition={{ duration: 0.7, delay: index * 0.1 }}
+            className="code-line font-firaCode"
           >
             {stoppingIndex >= index ? codeLines[index] : line}
           </motion.div>
@@ -101,8 +104,8 @@ export default function AnimatedCode() {
       <motion.div
         initial={{ opacity: 0, filter: "blur(10px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 1.3, delay: codeLines.length * 0.2 }}
-        className="centered-text w-full flex justify-center text-center mt-8 text-xl"
+        transition={{ duration: 0.7, delay: codeLines.length * 0.1 }}
+        className="centered-text w-full flex justify-center text-center mt-8 text-xl font-fira"
       >
         {scrambledCenteredText}
       </motion.div>
