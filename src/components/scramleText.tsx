@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-
 const codeText = `
 for (when) {
     creators.are {
@@ -22,19 +21,16 @@ for (when) {
     }
 }`;
 
-const centeredText = `[ GROUNDS ]            [ CREATOR FOUNDRY ]             [ RESET ]             [ STNDRD ]`;
-
+const centeredTextArray = ["[ GROUNDS ]", "[ CREATOR FOUNDRY ]", "[ RESET ]", "[ STNDRD ]"];
 const codeLines = codeText.split("\n");
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890*#@/*!%&^";
-
-
 
 export default function AnimatedCode() {
   const [scrambledCodeLines, setScrambledCodeLines] = useState(codeLines.map(line =>
     line.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)]))
   );
   const [scrambledCenteredText, setScrambledCenteredText] = useState(
-    centeredText.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)])
+    centeredTextArray.map(text => text.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)]))
   );
   const [stoppingIndex, setStoppingIndex] = useState(-1);
   const [stopCenteredText, setStopCenteredText] = useState(false);
@@ -75,19 +71,19 @@ export default function AnimatedCode() {
     if (!stopCenteredText) {
       const interval = setInterval(() => {
         setScrambledCenteredText(prevText =>
-          prevText.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)])
+          prevText.map(text => text.replace(/[^\s]/g, () => chars[Math.floor(Math.random() * chars.length)]))
         );
       }, 100);
       setTimeout(() => {
         clearInterval(interval);
-        setScrambledCenteredText(centeredText);
-      }, 3700);
+        setScrambledCenteredText(centeredTextArray);
+      }, 3200);
       return () => clearInterval(interval);
     }
   }, [stopCenteredText]);
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen bg-white font-firaCode text-black font-mono text-lg whitespace-pre p-4">
+    <div className="relative flex flex-col justify-center items-center h-screen bg-white font-firaCode text-sm  sm:text-xl text-black  whitespace-pre p-4 w-full overflow-hidden">
       <div className="max-w-[340px]">
         {scrambledCodeLines.map((line, index) => (
           <motion.div
@@ -105,9 +101,11 @@ export default function AnimatedCode() {
         initial={{ opacity: 0, filter: "blur(10px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 0.7, delay: codeLines.length * 0.1 }}
-        className="centered-text w-full flex justify-center text-center mt-8 text-xl font-fira"
+        className="centered-text w-full grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mt-8 text-sm sm:text-xl  mob:text-sm font-firaCode max-w-[1400px]"
       >
-        {scrambledCenteredText}
+        {scrambledCenteredText.map((text, index) => (
+          <div key={index}>{text}</div>
+        ))}
       </motion.div>
     </div>
   );
